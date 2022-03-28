@@ -182,7 +182,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-03-26 17:23:28" itemprop="dateModified" datetime="2022-03-26T17:23:28+08:00">2022-03-26</time>
+                <time title="Modified: 2022-03-28 12:47:21" itemprop="dateModified" datetime="2022-03-28T12:47:21+08:00">2022-03-28</time>
               </span>
 
           
@@ -196,9 +196,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello world"></a>Hello world</h1><p>THIS IS A TEST POST</p>
-<p>本文档用于Markdown测试</p>
-<h2 id="Definition-of-Loss"><a href="#Definition-of-Loss" class="headerlink" title="Definition of Loss"></a>Definition of Loss</h2><p>Image recovering is a series of problems like this: given a degenerated image $B$, which is assumed to be degenerated from a clear latent image $I$ by the following process:</p>
+          <h1 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello world"></a>Hello world</h1><p>This is a test post for markdown testing.</p>
+<p>本文档用于Markdown测试。</p>
+<h1 id="Definition-of-Loss"><a href="#Definition-of-Loss" class="headerlink" title="Definition of Loss"></a>Definition of Loss</h1><p>Image recovering is a series of problems like this: given a degenerated image $B$, which is assumed to be degenerated from a clear latent image $I$ by the following process:</p>
 <script type="math/tex; mode=display">
 B = k\otimes I + N</script><p>where $k$ denotes degenerate kernel, $\otimes$ denotes convolution operation, and $N$ denotes additive noise. </p>
 <p>We define the following loss function for image recovering task:</p>
@@ -208,10 +208,10 @@ B = k\otimes I + N</script><p>where $k$ denotes degenerate kernel, $\otimes$ den
 <script type="math/tex; mode=display">
 \Psi(I) = \lVert\nabla I\rVert_0</script><p>Where $\nabla$ denotes gradient operator, and $\lVert\cdot \rVert_0$ denotes L0 norm, or number of non-zero elements of a vector/matrix. Then image recovering is to solve the following problem:</p>
 <script type="math/tex; mode=display">
-\min_{k, I}\quad\lVert k\otimes I - B\rVert_2^2+\mu\lVert\nabla I\rVert_0</script><h2 id="Variable-splitting-solver"><a href="#Variable-splitting-solver" class="headerlink" title="Variable splitting solver"></a>Variable splitting solver</h2><p>Since optimizing L0 norm is NP-hard, we need some method to obtain approximate solution. One of the approximate methods is half-quadratic penalty method. An auxiliary variable $A$ is introduced:</p>
+\min_{k, I}\quad\lVert k\otimes I - B\rVert_2^2+\mu\lVert\nabla I\rVert_0</script><h1 id="Variable-splitting-solver"><a href="#Variable-splitting-solver" class="headerlink" title="Variable splitting solver"></a>Variable splitting solver</h1><p>Since optimizing L0 norm is NP-hard, we need some method to obtain approximate solution. One of the approximate methods is half-quadratic penalty method. An auxiliary variable $A$ is introduced:</p>
 <script type="math/tex; mode=display">
 \min_{k, I, A}\quad\lVert k\otimes I - B\rVert_2^2+\gamma\lVert\nabla I-A\rVert_2^2 +\mu\lVert\nabla I\rVert_0</script><p>where $\gamma$ is a large parameter to enforce $\lVert\nabla I-A\rVert\approx0$ for its solution, thus $A\approx \nabla I$ holds.</p>
-<h3 id="Updating-method-of-half-quadratic-variable-splitting"><a href="#Updating-method-of-half-quadratic-variable-splitting" class="headerlink" title="Updating method of half-quadratic variable splitting"></a>Updating method of half-quadratic variable splitting</h3><p>See this<sup><a href="#fn_1" id="reffn_1">1</a></sup>.</p>
+<h2 id="Updating-method-of-half-quadratic-variable-splitting"><a href="#Updating-method-of-half-quadratic-variable-splitting" class="headerlink" title="Updating method of half-quadratic variable splitting"></a>Updating method of half-quadratic variable splitting</h2><p>See this<sup><a href="#fn_1" id="reffn_1">1</a></sup>.</p>
 <blockquote id="fn_1">
 <sup>1</sup>. <a target="_blank" rel="noopener" href="https://jiaya.me/papers/deconvmodelsolver_2014.pdf">https://jiaya.me/papers/deconvmodelsolver_2014.pdf</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
 </blockquote>

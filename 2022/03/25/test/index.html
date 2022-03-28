@@ -20,18 +20,18 @@
     var CONFIG = {"hostname":"iridescent1318.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Hello worldTHIS IS A TEST POST 本文档用于Markdown测试 Definition of LossImage recovering is a series of problems like this: given a degenerated image $B$, which is assumed to be degenerated from a clear late">
+  <meta name="description" content="Hello worldThis is a test post for markdown testing. 本文档用于Markdown测试。 Definition of LossImage recovering is a series of problems like this: given a degenerated image $B$, which is assumed to be degene">
 <meta property="og:type" content="article">
 <meta property="og:title" content="test">
 <meta property="og:url" content="https://iridescent1318.top/2022/03/25/test/index.html">
 <meta property="og:site_name" content="Iridescent1318">
-<meta property="og:description" content="Hello worldTHIS IS A TEST POST 本文档用于Markdown测试 Definition of LossImage recovering is a series of problems like this: given a degenerated image $B$, which is assumed to be degenerated from a clear late">
+<meta property="og:description" content="Hello worldThis is a test post for markdown testing. 本文档用于Markdown测试。 Definition of LossImage recovering is a series of problems like this: given a degenerated image $B$, which is assumed to be degene">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-03-25T08:53:47.000Z">
-<meta property="article:modified_time" content="2022-03-26T09:23:28.024Z">
+<meta property="article:modified_time" content="2022-03-28T04:47:21.020Z">
 <meta property="article:author" content="Iridescent1318">
-<meta property="article:tag" content="test1">
-<meta property="article:tag" content="test2">
+<meta property="article:tag" content="Image deblurring">
+<meta property="article:tag" content="Blur deconvolution">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://iridescent1318.top/2022/03/25/test/">
@@ -186,7 +186,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-03-26 17:23:28" itemprop="dateModified" datetime="2022-03-26T17:23:28+08:00">2022-03-26</time>
+                <time title="Modified: 2022-03-28 12:47:21" itemprop="dateModified" datetime="2022-03-28T12:47:21+08:00">2022-03-28</time>
               </span>
 
           
@@ -200,9 +200,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello world"></a>Hello world</h1><p>THIS IS A TEST POST</p>
-<p>本文档用于Markdown测试</p>
-<h2 id="Definition-of-Loss"><a href="#Definition-of-Loss" class="headerlink" title="Definition of Loss"></a>Definition of Loss</h2><p>Image recovering is a series of problems like this: given a degenerated image $B$, which is assumed to be degenerated from a clear latent image $I$ by the following process:</p>
+        <h1 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello world"></a>Hello world</h1><p>This is a test post for markdown testing.</p>
+<p>本文档用于Markdown测试。</p>
+<h1 id="Definition-of-Loss"><a href="#Definition-of-Loss" class="headerlink" title="Definition of Loss"></a>Definition of Loss</h1><p>Image recovering is a series of problems like this: given a degenerated image $B$, which is assumed to be degenerated from a clear latent image $I$ by the following process:</p>
 <script type="math/tex; mode=display">
 B = k\otimes I + N</script><p>where $k$ denotes degenerate kernel, $\otimes$ denotes convolution operation, and $N$ denotes additive noise. </p>
 <p>We define the following loss function for image recovering task:</p>
@@ -212,10 +212,10 @@ B = k\otimes I + N</script><p>where $k$ denotes degenerate kernel, $\otimes$ den
 <script type="math/tex; mode=display">
 \Psi(I) = \lVert\nabla I\rVert_0</script><p>Where $\nabla$ denotes gradient operator, and $\lVert\cdot \rVert_0$ denotes L0 norm, or number of non-zero elements of a vector/matrix. Then image recovering is to solve the following problem:</p>
 <script type="math/tex; mode=display">
-\min_{k, I}\quad\lVert k\otimes I - B\rVert_2^2+\mu\lVert\nabla I\rVert_0</script><h2 id="Variable-splitting-solver"><a href="#Variable-splitting-solver" class="headerlink" title="Variable splitting solver"></a>Variable splitting solver</h2><p>Since optimizing L0 norm is NP-hard, we need some method to obtain approximate solution. One of the approximate methods is half-quadratic penalty method. An auxiliary variable $A$ is introduced:</p>
+\min_{k, I}\quad\lVert k\otimes I - B\rVert_2^2+\mu\lVert\nabla I\rVert_0</script><h1 id="Variable-splitting-solver"><a href="#Variable-splitting-solver" class="headerlink" title="Variable splitting solver"></a>Variable splitting solver</h1><p>Since optimizing L0 norm is NP-hard, we need some method to obtain approximate solution. One of the approximate methods is half-quadratic penalty method. An auxiliary variable $A$ is introduced:</p>
 <script type="math/tex; mode=display">
 \min_{k, I, A}\quad\lVert k\otimes I - B\rVert_2^2+\gamma\lVert\nabla I-A\rVert_2^2 +\mu\lVert\nabla I\rVert_0</script><p>where $\gamma$ is a large parameter to enforce $\lVert\nabla I-A\rVert\approx0$ for its solution, thus $A\approx \nabla I$ holds.</p>
-<h3 id="Updating-method-of-half-quadratic-variable-splitting"><a href="#Updating-method-of-half-quadratic-variable-splitting" class="headerlink" title="Updating method of half-quadratic variable splitting"></a>Updating method of half-quadratic variable splitting</h3><p>See this<sup><a href="#fn_1" id="reffn_1">1</a></sup>.</p>
+<h2 id="Updating-method-of-half-quadratic-variable-splitting"><a href="#Updating-method-of-half-quadratic-variable-splitting" class="headerlink" title="Updating method of half-quadratic variable splitting"></a>Updating method of half-quadratic variable splitting</h2><p>See this<sup><a href="#fn_1" id="reffn_1">1</a></sup>.</p>
 <blockquote id="fn_1">
 <sup>1</sup>. <a target="_blank" rel="noopener" href="https://jiaya.me/papers/deconvmodelsolver_2014.pdf">https://jiaya.me/papers/deconvmodelsolver_2014.pdf</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
 </blockquote>
@@ -228,8 +228,8 @@ B = k\otimes I + N</script><p>where $k$ denotes degenerate kernel, $\otimes$ den
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/test1/" rel="tag"># test1</a>
-              <a href="/tags/test2/" rel="tag"># test2</a>
+              <a href="/tags/Image-deblurring/" rel="tag"># Image deblurring</a>
+              <a href="/tags/Blur-deconvolution/" rel="tag"># Blur deconvolution</a>
           </div>
 
         
@@ -293,7 +293,7 @@ B = k\otimes I + N</script><p>where $k$ denotes degenerate kernel, $\otimes$ den
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Hello-world"><span class="nav-number">1.</span> <span class="nav-text">Hello world</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Definition-of-Loss"><span class="nav-number">1.1.</span> <span class="nav-text">Definition of Loss</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Variable-splitting-solver"><span class="nav-number">1.2.</span> <span class="nav-text">Variable splitting solver</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Updating-method-of-half-quadratic-variable-splitting"><span class="nav-number">1.2.1.</span> <span class="nav-text">Updating method of half-quadratic variable splitting</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Hello-world"><span class="nav-number">1.</span> <span class="nav-text">Hello world</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Definition-of-Loss"><span class="nav-number">2.</span> <span class="nav-text">Definition of Loss</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Variable-splitting-solver"><span class="nav-number">3.</span> <span class="nav-text">Variable splitting solver</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Updating-method-of-half-quadratic-variable-splitting"><span class="nav-number">3.1.</span> <span class="nav-text">Updating method of half-quadratic variable splitting</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
