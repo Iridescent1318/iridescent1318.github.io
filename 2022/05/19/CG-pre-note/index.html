@@ -20,30 +20,53 @@
     var CONFIG = {"hostname":"iridescent1318.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Facta non verba.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Iridescent1318">
-<meta property="og:url" content="https://iridescent1318.top/index.html">
+  <meta name="description" content="Scalable Image-based Indoor Scene Rendering with Reflections最近准备计算机图形学这门课的pre，准备将这篇文章，读的时候顺便做了笔记 Intro基于图片的渲染（IBR）所面临的困难：  室内场景下物体与相机的距离近，有严重的遮挡和视差问题 有很多依赖于观察视角的效应需要考虑，例如有很多反射表面  层级表示的方法可以用于解决这类问题，将每个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CG-pre-note">
+<meta property="og:url" content="https://iridescent1318.top/2022/05/19/CG-pre-note/index.html">
 <meta property="og:site_name" content="Iridescent1318">
-<meta property="og:description" content="Facta non verba.">
+<meta property="og:description" content="Scalable Image-based Indoor Scene Rendering with Reflections最近准备计算机图形学这门课的pre，准备将这篇文章，读的时候顺便做了笔记 Intro基于图片的渲染（IBR）所面临的困难：  室内场景下物体与相机的距离近，有严重的遮挡和视差问题 有很多依赖于观察视角的效应需要考虑，例如有很多反射表面  层级表示的方法可以用于解决这类问题，将每个">
 <meta property="og:locale">
+<meta property="og:image" content="https://s2.loli.net/2022/05/19/j7P3JhlGLRgN25b.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/05/19/nEkpS9GL3NvlstX.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/05/19/2tXcgREeNWnUTmV.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/05/19/lCOBiz1Aae4G87x.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/05/19/7mXihnv8K6Y1E5V.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/05/19/LUEjPyXovRYt6FK.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/05/19/buMQqy1doenSI5N.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/05/19/lSQzIFte5NscHxC.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/05/19/E8cM6pUGwWjhigZ.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/05/19/SQs6VDPwfXInhA3.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/05/19/Ly2ksYaftFn6zpi.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/05/19/Z2Fnipt1jIBKAsH.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/05/19/TelNr1dt4czqbCo.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/05/19/vZFGxCAqtkuhKa5.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/05/19/BExl7d5FLvMYp64.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/05/19/ubfmcdHr13D65xv.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/05/19/rHFvMY6VtbRyCfG.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/05/19/iFeURQIVAfM4x2u.jpg">
+<meta property="article:published_time" content="2022-05-19T13:23:36.000Z">
+<meta property="article:modified_time" content="2022-05-19T13:25:14.462Z">
 <meta property="article:author" content="Iridescent1318">
+<meta property="article:tag" content="Computer Graphics">
+<meta property="article:tag" content="Super-resolution">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/05/19/j7P3JhlGLRgN25b.jpg">
 
-<link rel="canonical" href="https://iridescent1318.top/">
+<link rel="canonical" href="https://iridescent1318.top/2022/05/19/CG-pre-note/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-Hans'
   };
 </script>
 
-  <title>Iridescent1318</title>
+  <title>CG-pre-note | Iridescent1318</title>
   
 
 
@@ -145,9 +168,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
@@ -163,10 +187,9 @@
       <meta itemprop="name" content="Iridescent1318">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/19/CG-pre-note/" class="post-title-link" itemprop="url">CG-pre-note</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          CG-pre-note
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -190,7 +213,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Scalable-Image-based-Indoor-Scene-Rendering-with-Reflections"><a href="#Scalable-Image-based-Indoor-Scene-Rendering-with-Reflections" class="headerlink" title="Scalable Image-based Indoor Scene Rendering with Reflections"></a>Scalable Image-based Indoor Scene Rendering with Reflections</h1><p>最近准备计算机图形学这门课的pre，准备将这篇文章，读的时候顺便做了笔记</p>
+        <h1 id="Scalable-Image-based-Indoor-Scene-Rendering-with-Reflections"><a href="#Scalable-Image-based-Indoor-Scene-Rendering-with-Reflections" class="headerlink" title="Scalable Image-based Indoor Scene Rendering with Reflections"></a>Scalable Image-based Indoor Scene Rendering with Reflections</h1><p>最近准备计算机图形学这门课的pre，准备将这篇文章，读的时候顺便做了笔记</p>
 <h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h2><p>基于图片的渲染（IBR）所面临的困难：</p>
 <ol>
 <li>室内场景下物体与相机的距离近，有严重的遮挡和视差问题</li>
@@ -281,104 +304,34 @@ L_{warp} = L1(G(I_n), G(I_{n-1}^\prime)) + L1(I_n, I_{n-1}^\prime)</script><h2 i
 <p><a target="_blank" rel="noopener" href="https://ensemble.clemson.edu/hapi/v1/contents/permalinks/o9XWz8q3/view">https://ensemble.clemson.edu/hapi/v1/contents/permalinks/o9XWz8q3/view</a></p>
 <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p>Jiamin Xu, Xiuchao Wu, Zihan Zhu, Qixing Huang, Yin Yang, Hujun Bao, and Weiwei Xu. 2021. Scalable image-based indoor scene rendering with reflections. <i>ACM Trans. Graph.</i> 40, 4, Article 60 (August 2021), 14 pages. <a target="_blank" rel="noopener" href="https://doi.org/10.1145/3450626.3459849">https://doi.org/10.1145/3450626.3459849</a></p>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/Computer-Graphics/" rel="tag"># Computer Graphics</a>
+              <a href="/tags/Super-resolution/" rel="tag"># Super-resolution</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://iridescent1318.top/2022/03/25/test/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/ran.jpg">
-      <meta itemprop="name" content="Iridescent1318">
-      <meta itemprop="description" content="Facta non verba.">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Iridescent1318">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/25/test/" class="post-title-link" itemprop="url">test</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-03-25 16:53:47" itemprop="dateCreated datePublished" datetime="2022-03-25T16:53:47+08:00">2022-03-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-03-28 12:47:21" itemprop="dateModified" datetime="2022-03-28T12:47:21+08:00">2022-03-28</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello world"></a>Hello world</h1><p>This is a test post for markdown testing.</p>
-<p>本文档用于Markdown测试。</p>
-<h1 id="Definition-of-Loss"><a href="#Definition-of-Loss" class="headerlink" title="Definition of Loss"></a>Definition of Loss</h1><p>Image recovering is a series of problems like this: given a degenerated image $B$, which is assumed to be degenerated from a clear latent image $I$ by the following process:</p>
-<script type="math/tex; mode=display">
-B = k\otimes I + N</script><p>where $k$ denotes degenerate kernel, $\otimes$ denotes convolution operation, and $N$ denotes additive noise. </p>
-<p>We define the following loss function for image recovering task:</p>
-<script type="math/tex; mode=display">
-\mathcal{L}=\lVert k\otimes I - B\rVert_2^2+\mu\Psi(I)%\lVert\nabla I\rVert_0</script><p>Where $\lVert\cdot\rVert_2$ denotes L2 norm of all elements, $\Psi(x)$ denotes regularization term and $\mu$ is a coefficient of the term. Recovering $k$ and $I$ blindly is ill-posed , so some priors for a clear image, e.g. sparsity of gradients, are needed in terms of regularization terms in the loss function.</p>
-<p>For example, if we use gradient sparsity prior for image recovering, the regularization term should be</p>
-<script type="math/tex; mode=display">
-\Psi(I) = \lVert\nabla I\rVert_0</script><p>Where $\nabla$ denotes gradient operator, and $\lVert\cdot \rVert_0$ denotes L0 norm, or number of non-zero elements of a vector/matrix. Then image recovering is to solve the following problem:</p>
-<script type="math/tex; mode=display">
-\min_{k, I}\quad\lVert k\otimes I - B\rVert_2^2+\mu\lVert\nabla I\rVert_0</script><h1 id="Variable-splitting-solver"><a href="#Variable-splitting-solver" class="headerlink" title="Variable splitting solver"></a>Variable splitting solver</h1><p>Since optimizing L0 norm is NP-hard, we need some method to obtain approximate solution. One of the approximate methods is half-quadratic penalty method. An auxiliary variable $A$ is introduced:</p>
-<script type="math/tex; mode=display">
-\min_{k, I, A}\quad\lVert k\otimes I - B\rVert_2^2+\gamma\lVert\nabla I-A\rVert_2^2 +\mu\lVert\nabla I\rVert_0</script><p>where $\gamma$ is a large parameter to enforce $\lVert\nabla I-A\rVert\approx0$ for its solution, thus $A\approx \nabla I$ holds.</p>
-<h2 id="Updating-method-of-half-quadratic-variable-splitting"><a href="#Updating-method-of-half-quadratic-variable-splitting" class="headerlink" title="Updating method of half-quadratic variable splitting"></a>Updating method of half-quadratic variable splitting</h2><p>See this<sup><a href="#fn_1" id="reffn_1">1</a></sup>.</p>
-<blockquote id="fn_1">
-<sup>1</sup>. <a target="_blank" rel="noopener" href="https://jiaya.me/papers/deconvmodelsolver_2014.pdf">https://jiaya.me/papers/deconvmodelsolver_2014.pdf</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
-</blockquote>
-
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/25/test/" rel="prev" title="test">
+      <i class="fa fa-chevron-left"></i> test
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-
   
 
 
@@ -431,6 +384,7 @@ B = k\otimes I + N</script><p>where $k$ denotes degenerate kernel, $\otimes$ den
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Scalable-Image-based-Indoor-Scene-Rendering-with-Reflections"><span class="nav-number">1.</span> <span class="nav-text">Scalable Image-based Indoor Scene Rendering with Reflections</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Intro"><span class="nav-number">1.1.</span> <span class="nav-text">Intro</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-number">1.2.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Per-view-Two-layer-Mesh-Construction"><span class="nav-number">1.3.</span> <span class="nav-text">Per-view Two-layer Mesh Construction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#View-Warping-Using-Two-layer-Mesh-Representation"><span class="nav-number">1.4.</span> <span class="nav-text">View Warping Using Two-layer Mesh Representation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#View-Selection"><span class="nav-number">1.4.1.</span> <span class="nav-text">View Selection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FMDP-Generation"><span class="nav-number">1.4.2.</span> <span class="nav-text">FMDP Generation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#View-Blending"><span class="nav-number">1.4.3.</span> <span class="nav-text">View Blending</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DSRNet"><span class="nav-number">1.4.4.</span> <span class="nav-text">DSRNet</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Result"><span class="nav-number">1.5.</span> <span class="nav-text">Result</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%A7%E8%83%BD"><span class="nav-number">1.5.1.</span> <span class="nav-text">性能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reflection-Decomposition-Algorithm"><span class="nav-number">1.5.2.</span> <span class="nav-text">Reflection Decomposition Algorithm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DSRNet-1"><span class="nav-number">1.5.3.</span> <span class="nav-text">DSRNet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rendering-Results"><span class="nav-number">1.5.4.</span> <span class="nav-text">Rendering Results</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%86%E9%A2%91%E6%BC%94%E7%A4%BA"><span class="nav-number">2.</span> <span class="nav-text">视频演示</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -545,59 +499,6 @@ B = k\otimes I + N</script><p>where $k$ denotes degenerate kernel, $\otimes$ den
   
 
   
-      
-
-<script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      loader: {
-        source: {
-          '[tex]/amsCd': '[tex]/amscd',
-          '[tex]/AMScd': '[tex]/amscd'
-        }
-      },
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              let target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    (function () {
-      var script = document.createElement('script');
-      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
-      script.defer = true;
-      document.head.appendChild(script);
-    })();
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
-
-    
 
   
 
