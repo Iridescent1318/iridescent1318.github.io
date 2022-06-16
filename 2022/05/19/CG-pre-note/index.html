@@ -46,7 +46,7 @@
 <meta property="og:image" content="https://s2.loli.net/2022/05/19/rHFvMY6VtbRyCfG.jpg">
 <meta property="og:image" content="https://s2.loli.net/2022/05/19/iFeURQIVAfM4x2u.jpg">
 <meta property="article:published_time" content="2022-05-19T13:23:36.000Z">
-<meta property="article:modified_time" content="2022-06-16T08:00:29.122Z">
+<meta property="article:modified_time" content="2022-06-16T10:14:16.045Z">
 <meta property="article:author" content="Iridescent1318">
 <meta property="article:tag" content="Computer Graphics">
 <meta property="article:tag" content="Super-resolution">
@@ -205,7 +205,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-06-16 16:00:29" itemprop="dateModified" datetime="2022-06-16T16:00:29+08:00">2022-06-16</time>
+                <time title="Modified: 2022-06-16 18:14:16" itemprop="dateModified" datetime="2022-06-16T18:14:16+08:00">2022-06-16</time>
               </span>
 
           
@@ -260,9 +260,9 @@
 <h3 id="Reflection-Decomposition"><a href="#Reflection-Decomposition" class="headerlink" title="Reflection Decomposition"></a>Reflection Decomposition</h3><p>对于某个视角下的一张室内场景图片$I_k$，本文假设其可进行如下分解，即分解为不含光反射的表面层和光反射层的线性组合：</p>
 <script type="math/tex; mode=display">
 I_k = I_k^0 + \beta_kI_k^1</script><p>其中$u$代表$I_k$中的任一像素，$I_k^0$和$I_k^1$分别代表不含反射效果的表面层和仅含光反射效果的反射层，$\beta_k$是一个用于表示像素是否为反射面的一个掩膜。用$M_k^0$和$M_k^1$分别代表表面层和反射层的网格，那么反射分解的目的就是根据$I_k$估计出$I_k^0$、$I_k^1$、$M_k^0$和$M_k^1$。为了简便，用$I_k^{0,1}$同时指代$I_k^0$和$I_k^1$，$M_k^{0,1}$同理。</p>
-<p>反射分解的流程图如\autoref{reflect_decompose}所示，大致流程为通过给定的参考图片、相邻视角的若干图片和全局网格，通过反射探测和三维空间探测，首先得到$\beta_k$和$M_k^{0,1}$的一个初步估计作为初始值，接下来通过优化不同的目标函数并迭代数次，得到最终的反射分解输出。</p>
+<p>反射分解的流程图如下所示，大致流程为通过给定的参考图片、相邻视角的若干图片和全局网格，通过反射探测和三维空间探测，首先得到$\beta_k$和$M_k^{0,1}$的一个初步估计作为初始值，接下来通过优化不同的目标函数并迭代数次，得到最终的反射分解输出。</p>
 <p><img src="https://s2.loli.net/2022/05/19/2tXcgREeNWnUTmV.jpg" alt=""></p>
-<p>本文提出的反射分解算法中，首先将$\beta_k$和$M_k^{0,1}$进行初始化。接着定义$\mathcal{N}_k$为与$I_k$相邻的图片集合，这一步通过计算其他图片的两层网格$M_k^{0,1}$，并比较与本图的两层网格的重叠程度，选取重叠程度超过30\%且重叠程度最高的六张图片作为相邻集合。</p>
+<p>本文提出的反射分解算法中，首先将$\beta_k$和$M_k^{0,1}$进行初始化。接着定义$\mathcal{N}_k$为与$I_k$相邻的图片集合，这一步通过计算其他图片的两层网格$M_k^{0,1}$，并比较与本图的两层网格的重叠程度，选取重叠程度超过30%且重叠程度最高的六张图片作为相邻集合。</p>
 <p>同时，本文还利用了给定图片与相邻图片像素之间的光流$\omega_{k^\prime}(u, M_k^0)$，其计算可以通过在$M_k^0$上用$I_{k^\prime}$的相机位参渲染来实现。</p>
 <p>为了细化光流，本文用一个非严格的二维扭曲函数$F_{k^\prime}$来描述光流因视角变换而产生的扭曲情况，$F_{k^\prime}$被定义在一个二维的$40\times 30$大小的网格上，网格共有$41\times 31$个控制点，每个控制点对应一个位移向量$f_{k^\prime}^l$。在某个像素$u$上的扭曲函数$F_{k^\prime}$可以如下定义：</p>
 <script type="math/tex; mode=display">
@@ -283,7 +283,7 @@ F_{k^\prime} (u) = u + \sum_l \theta_{k^\prime}^l(u)f_{k^\prime}^l</script><p>�
             v_3^t - v_2^t
         \right)
     \right)}^2
-\end{align*}</script><p>其中$w_r=1.2, w_a=0.5$。目标函数的三项分别保证选定图片与相邻图片的颜色一致性、变形过程的正则化，以及ARAP(As-rigid-as-possible)正则化条件\cite{igarashi2005rigid}，第三项的计算需要将每个网格拆分成两个三角形，$v_i^t$代表每个三角形的三个顶点。优化过程通过高斯-牛顿法迭代进行。</p>
+\end{align*}</script><p>其中$w_r=1.2, w_a=0.5$。目标函数的三项分别保证选定图片与相邻图片的颜色一致性、变形过程的正则化，以及ARAP(As-rigid-as-possible)正则化条件，第三项的计算需要将每个网格拆分成两个三角形，$v_i^t$代表每个三角形的三个顶点。优化过程通过高斯-牛顿法迭代进行。</p>
 <p>最终，给定$\mathcal{N}_k$和$\omega_{k^\prime}(u, M_k^0)$，我们可以如下初始化$I_k^0$：</p>
 <script type="math/tex; mode=display">
 I_k^0(u) = \min \left( \left\{ I_{k^\prime}\left(F_{k^\prime}\left( \omega_{k^\prime}\left(u, M_k^0\right) \right)\right)\mid k^\prime \in \mathcal{N}_k \bigcup k \right\} \right)</script><p>然后通过$I_k^1=I_k-I_k^0$，即可初始化$I_k^1$。</p>
@@ -291,19 +291,19 @@ I_k^0(u) = \min \left( \left\{ I_{k^\prime}\left(F_{k^\prime}\left( \omega_{k^\p
 <script type="math/tex; mode=display">
 \arg\min_{(R, T)_k^1, I_k^{0,1}, M_k^{0,1}} E_d + \lambda_s E_s + \lambda_p E_p + \lambda_{mv} E_{mv} \quad 
     s.t. I_k^{0, 1}(u) \in [0, 1]</script><p>其中$(R, T)_k^1$代表$M_k^1$的旋转和平移变换。整个目标函数有4项，分别代表数据项、光滑项、先验项和多视角一致项。</p>
-<p>数据项（如下所示）计算的是多视角合成的结果$\tilde{I}_{k^\prime}$和拍摄的结果$I_{k^\prime}$之间的误差，其中$\omega_{k^\prime}^{-1}$代表扭曲变换的反变换。</p>
+<p>数据项计算的是多视角合成的结果$\tilde{I}_{k^\prime}$和拍摄的结果$I_{k^\prime}$之间的误差，其中$\omega_{k^\prime}^{-1}$代表扭曲变换的反变换。</p>
 <script type="math/tex; mode=display">
 \begin{align*}
     E_d &= \sum_{k^\prime \in \mathcal{N}_k \bigcup k} \sum_{u}\norm{\tilde{I}_{k^\prime}(u) - I_{k^\prime}(u)}^2 \\
     \tilde{I}_{k^\prime} &= I_k^0\left( \omega_{k^\prime}^{-1} \left( u, M_k^0 \right) \right) + 
     \beta_k\left( \omega_{k^\prime}^{-1} \left( u, M_k^0 \right) \right) + 
     I_k^1\left( \omega_{k^\prime}^{-1} \left( u, M_k^1 \right) \right)
-\end{align*}</script><p>光滑项（如下所示）用于最小化$I_k^{0, 1}$的梯度和$M_k^{0, 1}$的平均曲率法向量，其中$v$是网格$M_k^{0, 1}$上的顶点，H是使用余切权重计算得到的拉普拉斯矩阵。</p>
+\end{align*}</script><p>光滑项用于最小化$I_k^{0, 1}$的梯度和$M_k^{0, 1}$的平均曲率法向量，其中$v$是网格$M_k^{0, 1}$上的顶点，H是使用余切权重计算得到的拉普拉斯矩阵。</p>
 <script type="math/tex; mode=display">
-E_s = \sum_u \left( \exp\left(-\nabla I_k^{0, 1}(u)\right)\norm{\nabla I_k^{0, 1}(u)}^2 \right) + \sum_v\norm{HM_k^{0, 1}(v)}^2</script><p>先验项（如下所示）用于保证$I_k^{0, 1}$的正则化，使优化过程平稳：</p>
+E_s = \sum_u \left( \exp\left(-\nabla I_k^{0, 1}(u)\right)\norm{\nabla I_k^{0, 1}(u)}^2 \right) + \sum_v\norm{HM_k^{0, 1}(v)}^2</script><p>先验项用于保证$I_k^{0, 1}$的正则化，使优化过程平稳：</p>
 <script type="math/tex; mode=display">
 E_p = \sum_u \norm{I_k^0(u)}^2 + \sum_u \norm{I_k^1(u)}^2</script><p>两层分解的目标函数优化过程中，多视角一致项的系数$\lambda_{mv}$一开始先设为0，首先优化前三项。优化过程分为交替优化$I_k^{0, 1}$和$\left\{ (R, T)_k^1, M_k^{0, 1} \right\}$两步，每步固定其中一方优化另一方，如此交替迭代直到收敛，然后再将$\lambda_{mv}$调为0.05，在多视角一致性方面进行优化。</p>
-<p>多视角一致项（如下所示）直观上可以描述合成结果和实际拍摄结果之间的误差：</p>
+<p>多视角一致项直观上可以描述合成结果和实际拍摄结果之间的误差：</p>
 <script type="math/tex; mode=display">
 E_{mv} = \sum_u \norm{I_k^0(u) - \tilde{I}_k^0(u)}^2 + \sum_u \norm{I_k^1(u) - \tilde{I}_k^1(u)}^2</script><p>实际优化过程中，本文为了确保鲁棒性，按照如下方式计算$\tilde{I}_k^0(u)$，其中用到的结果都是上一步分解过程得到的：</p>
 <script type="math/tex; mode=display">
