@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"iridescent1318.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Scalable Image-based Indoor Scene Rendering with Reflections最近准备计算机图形学这门课的pre，准备将这篇文章，读的时候顺便做了笔记 Intro基于图片的渲染（IBR）所面临的困难：  室内场景下物体与相机的距离近，有严重的遮挡和视差问题 有很多依赖于观察视角的效应需要考虑，例如有很多反射表面  层级表示的方法可以用于解决这类问题，将每个">
+  <meta name="description" content="Scalable Image-based Indoor Scene Rendering with Reflections最近准备计算机图形学这门课的pre，准备讲这篇文章，读的时候顺便做了笔记 2022.06.16 Update：报告写完了，原理部分按照报告基本重写了一遍 Intro基于图片的渲染（IBR）所面临的困难：  室内场景下物体与相机的距离近，有严重的遮挡和视差问题 有很多依赖于观察视角">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Scalable Image-based Indoor Scene Rendering with Reflections">
 <meta property="og:url" content="https://iridescent1318.top/2022/05/19/CG-pre-note/index.html">
 <meta property="og:site_name" content="Iridescent1318">
-<meta property="og:description" content="Scalable Image-based Indoor Scene Rendering with Reflections最近准备计算机图形学这门课的pre，准备将这篇文章，读的时候顺便做了笔记 Intro基于图片的渲染（IBR）所面临的困难：  室内场景下物体与相机的距离近，有严重的遮挡和视差问题 有很多依赖于观察视角的效应需要考虑，例如有很多反射表面  层级表示的方法可以用于解决这类问题，将每个">
+<meta property="og:description" content="Scalable Image-based Indoor Scene Rendering with Reflections最近准备计算机图形学这门课的pre，准备讲这篇文章，读的时候顺便做了笔记 2022.06.16 Update：报告写完了，原理部分按照报告基本重写了一遍 Intro基于图片的渲染（IBR）所面临的困难：  室内场景下物体与相机的距离近，有严重的遮挡和视差问题 有很多依赖于观察视角">
 <meta property="og:locale">
 <meta property="og:image" content="https://s2.loli.net/2022/05/19/j7P3JhlGLRgN25b.jpg">
 <meta property="og:image" content="https://s2.loli.net/2022/05/19/nEkpS9GL3NvlstX.jpg">
@@ -46,7 +46,7 @@
 <meta property="og:image" content="https://s2.loli.net/2022/05/19/rHFvMY6VtbRyCfG.jpg">
 <meta property="og:image" content="https://s2.loli.net/2022/05/19/iFeURQIVAfM4x2u.jpg">
 <meta property="article:published_time" content="2022-05-19T13:23:36.000Z">
-<meta property="article:modified_time" content="2022-05-19T15:18:06.531Z">
+<meta property="article:modified_time" content="2022-06-16T08:00:29.122Z">
 <meta property="article:author" content="Iridescent1318">
 <meta property="article:tag" content="Computer Graphics">
 <meta property="article:tag" content="Super-resolution">
@@ -197,10 +197,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-05-19 21:23:36 / Modified: 23:18:06" itemprop="dateCreated datePublished" datetime="2022-05-19T21:23:36+08:00">2022-05-19</time>
+              <time title="Created: 2022-05-19 21:23:36" itemprop="dateCreated datePublished" datetime="2022-05-19T21:23:36+08:00">2022-05-19</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-06-16 16:00:29" itemprop="dateModified" datetime="2022-06-16T16:00:29+08:00">2022-06-16</time>
+              </span>
 
           
 
@@ -213,7 +219,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Scalable-Image-based-Indoor-Scene-Rendering-with-Reflections"><a href="#Scalable-Image-based-Indoor-Scene-Rendering-with-Reflections" class="headerlink" title="Scalable Image-based Indoor Scene Rendering with Reflections"></a>Scalable Image-based Indoor Scene Rendering with Reflections</h1><p>最近准备计算机图形学这门课的pre，准备将这篇文章，读的时候顺便做了笔记</p>
+        <h1 id="Scalable-Image-based-Indoor-Scene-Rendering-with-Reflections"><a href="#Scalable-Image-based-Indoor-Scene-Rendering-with-Reflections" class="headerlink" title="Scalable Image-based Indoor Scene Rendering with Reflections"></a>Scalable Image-based Indoor Scene Rendering with Reflections</h1><p>最近准备计算机图形学这门课的pre，准备讲这篇文章，读的时候顺便做了笔记</p>
+<p>2022.06.16 Update：报告写完了，原理部分按照报告基本重写了一遍</p>
 <h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h2><p>基于图片的渲染（IBR）所面临的困难：</p>
 <ol>
 <li>室内场景下物体与相机的距离近，有严重的遮挡和视差问题</li>
@@ -245,53 +252,110 @@
 <li>DSRNet: 使用超分网络得到高分辨率的渲染图</li>
 </ol>
 <p><img src="https://s2.loli.net/2022/05/19/j7P3JhlGLRgN25b.jpg" alt=""></p>
-<h2 id="Per-view-Two-layer-Mesh-Construction"><a href="#Per-view-Two-layer-Mesh-Construction" class="headerlink" title="Per-view Two-layer Mesh Construction"></a>Per-view Two-layer Mesh Construction</h2><p>分为两个子步骤：1. surface layer mesh construction; 2. reflection decomposition</p>
-<ol>
-<li><p>获得深度图后，对深度图进行边缘探测和细化，然后将其转化为表面网格<br>细化流程如下图，细化后的边缘更加平整。<br><img src="https://s2.loli.net/2022/05/19/nEkpS9GL3NvlstX.jpg" alt=""></p>
-</li>
-<li><p>反射分解：假设第k个视角下RGB图片可以分解成不含反射的表面层和仅含反射的反射层</p>
+<h2 id="Preprocessing"><a href="#Preprocessing" class="headerlink" title="Preprocessing"></a>Preprocessing</h2><p>预处理阶段将利用预先建立的全局网格$G$，在每个视角中重新建立两层网格表示，因此可以分为全局网格建立、表层网格建立和反射分解等三个步骤。</p>
+<h3 id="Global-Mesh-Construction"><a href="#Global-Mesh-Construction" class="headerlink" title="Global Mesh Construction"></a>Global Mesh Construction</h3><p>本文为了重建整个室内场景的全局网格，同时利用了数码相机的照片和使用Microsoft Kinect4拍摄的RGBD图像。整个采集流程可概括如下：首先使用RealityCapture软件建立初步的全局网格，利用拍摄采集的数百张图片，更加精确地计算相机位姿参数，从而加速三维重建；然后拍摄少量RGBD图片序列，每个序列可以通过KinectFusion算法得到一个融合的网格，将融合网格和RealityCapture建立的全局网格使用迭代最近点算法进行对齐，这样就得到了最终的全局网格。</p>
+<h3 id="Surface-Layer-Construction"><a href="#Surface-Layer-Construction" class="headerlink" title="Surface Layer Construction"></a>Surface Layer Construction</h3><p>完成全局网格的建立之后，对于每个视角所拍的图片，需要进行图片的表层网格的建立。由于每张图片都有对应的相机位姿参数，我们只需在全局网格中用上对应的相机位参，就能得到一个初步的深度图表示，然后用深度图完成表层网格的建立。</p>
+<p>由于全局网格不一定很精细，这样得到的深度图的边缘与对应的RGB图像相比可能参差不齐。为了解决上述的深度图误差问题，本文对深度图首先进行边缘探测，将可能作为边缘的像素提取出来，然后对粗糙的边缘进行插值细化，使其相对平整的同时，贴近真实的RGB图像中的边缘。如下图所示，(a)和(b)分别是深度图和法向图的可视化效果，(c)和(d)将深度图的边缘部分用黄绿色描了出来，可以看出与RGB图像中平整的边缘不同，深度图的边缘比较粗糙、不平滑，(e)是对深度图边缘进行细化后的结果，与原来相比平滑一些，(f)是最终建立的表层网格效果。</p>
+<p>完成边缘细化后，本文将每个像素初始化为两个三角形，通过一系列简化和合并的方法，迭代生成对应的表层网格。在简化过程中，为了保留深度图中的边缘，本文提高了靠近这些边缘部分的网格的误差权重。<br><img src="https://s2.loli.net/2022/05/19/nEkpS9GL3NvlstX.jpg" alt=""></p>
+<h3 id="Reflection-Decomposition"><a href="#Reflection-Decomposition" class="headerlink" title="Reflection Decomposition"></a>Reflection Decomposition</h3><p>对于某个视角下的一张室内场景图片$I_k$，本文假设其可进行如下分解，即分解为不含光反射的表面层和光反射层的线性组合：</p>
 <script type="math/tex; mode=display">
-I_k = I_k^0 + \beta_kI_k^1</script></li>
-</ol>
-<p>其中$I_k^0, I_k^1$分别是表面层和反射层，反射层有一个mask$\beta_k$。</p>
-<p>Refelction decomposition的目标是给定$I_k$和它对应的几个视角，求出$I_k^0, \beta_k, I_k^1$和表面层网格$M_k^0$、反射层网格$M_k^1$。$ M_k^{0,1}$用于将$I_k^0, I_k^1$warp到另一个视角$k^\prime$，然后用上述公式合成另一视角下的图片。</p>
-<p>Reflection decomposition的流程参考下图：</p>
+I_k = I_k^0 + \beta_kI_k^1</script><p>其中$u$代表$I_k$中的任一像素，$I_k^0$和$I_k^1$分别代表不含反射效果的表面层和仅含光反射效果的反射层，$\beta_k$是一个用于表示像素是否为反射面的一个掩膜。用$M_k^0$和$M_k^1$分别代表表面层和反射层的网格，那么反射分解的目的就是根据$I_k$估计出$I_k^0$、$I_k^1$、$M_k^0$和$M_k^1$。为了简便，用$I_k^{0,1}$同时指代$I_k^0$和$I_k^1$，$M_k^{0,1}$同理。</p>
+<p>反射分解的流程图如\autoref{reflect_decompose}所示，大致流程为通过给定的参考图片、相邻视角的若干图片和全局网格，通过反射探测和三维空间探测，首先得到$\beta_k$和$M_k^{0,1}$的一个初步估计作为初始值，接下来通过优化不同的目标函数并迭代数次，得到最终的反射分解输出。</p>
 <p><img src="https://s2.loli.net/2022/05/19/2tXcgREeNWnUTmV.jpg" alt=""></p>
-<p>本文利用全局网格信息和多视角一致性约束，使得反射分解过程更加鲁棒。</p>
-<p>原文对此有很多的细节描述，包括初始化，优化过程，针对高光、镜面等的特殊处理等。</p>
-<p>待补充。。。</p>
-<h2 id="View-Warping-Using-Two-layer-Mesh-Representation"><a href="#View-Warping-Using-Two-layer-Mesh-Representation" class="headerlink" title="View Warping Using Two-layer Mesh Representation"></a>View Warping Using Two-layer Mesh Representation</h2><p>给定当前的视角$V_k$，需要渲染一个新视角$V_n$下的图片。首先得到$I_k^0, I_k^1$在视角$V_n$下warp后的结果，然后使用$I_k = I_k^0 + \beta_kI_k^1$进行合成。</p>
+<p>本文提出的反射分解算法中，首先将$\beta_k$和$M_k^{0,1}$进行初始化。接着定义$\mathcal{N}_k$为与$I_k$相邻的图片集合，这一步通过计算其他图片的两层网格$M_k^{0,1}$，并比较与本图的两层网格的重叠程度，选取重叠程度超过30\%且重叠程度最高的六张图片作为相邻集合。</p>
+<p>同时，本文还利用了给定图片与相邻图片像素之间的光流$\omega_{k^\prime}(u, M_k^0)$，其计算可以通过在$M_k^0$上用$I_{k^\prime}$的相机位参渲染来实现。</p>
+<p>为了细化光流，本文用一个非严格的二维扭曲函数$F_{k^\prime}$来描述光流因视角变换而产生的扭曲情况，$F_{k^\prime}$被定义在一个二维的$40\times 30$大小的网格上，网格共有$41\times 31$个控制点，每个控制点对应一个位移向量$f_{k^\prime}^l$。在某个像素$u$上的扭曲函数$F_{k^\prime}$可以如下定义：</p>
+<script type="math/tex; mode=display">
+F_{k^\prime} (u) = u + \sum_l \theta_{k^\prime}^l(u)f_{k^\prime}^l</script><p>其中$ \theta_{k^\prime}^l$是使用控制点进行双线性插值中的权重，控制点所在网格需包含给定像素$u$。有了上述定义，我们可以使用完整的光流$F_{k^\prime}\left( \omega_{k^\prime}\left(u, M_k^0\right) \right)$来聚合相邻视角的信息。</p>
+<p>位移向量$f_{k^\prime}^l$可通过最小化下述目标函数得到：</p>
+<script type="math/tex; mode=display">
+\def\norm#1{ {\left\lVert #1 \right\rVert} }
+
+\begin{align*}
+    E &= \sum_u \norm{I_{k^\prime}\left(F_{k^\prime}\left( \omega_{k^\prime}\left(u, M_k^0\right) \right)\right)-I_k(u)}^2 + w_r\sum_l \norm{f_{k^\prime}^l}^2 \\
+    &+ w_a\sum_t \norm{v_1^t-\left(
+        v_2^t + \alpha \left[
+            \begin{array}{cc}
+                0 & 1 \\ -1 & 0
+            \end{array}
+        \right]
+        \left(
+            v_3^t - v_2^t
+        \right)
+    \right)}^2
+\end{align*}</script><p>其中$w_r=1.2, w_a=0.5$。目标函数的三项分别保证选定图片与相邻图片的颜色一致性、变形过程的正则化，以及ARAP(As-rigid-as-possible)正则化条件\cite{igarashi2005rigid}，第三项的计算需要将每个网格拆分成两个三角形，$v_i^t$代表每个三角形的三个顶点。优化过程通过高斯-牛顿法迭代进行。</p>
+<p>最终，给定$\mathcal{N}_k$和$\omega_{k^\prime}(u, M_k^0)$，我们可以如下初始化$I_k^0$：</p>
+<script type="math/tex; mode=display">
+I_k^0(u) = \min \left( \left\{ I_{k^\prime}\left(F_{k^\prime}\left( \omega_{k^\prime}\left(u, M_k^0\right) \right)\right)\mid k^\prime \in \mathcal{N}_k \bigcup k \right\} \right)</script><p>然后通过$I_k^1=I_k-I_k^0$，即可初始化$I_k^1$。</p>
+<p>本文通过优化下述目标函数完成对$I_k^{0,1}$和$M_k^{0,1}$的估计：</p>
+<script type="math/tex; mode=display">
+\arg\min_{(R, T)_k^1, I_k^{0,1}, M_k^{0,1}} E_d + \lambda_s E_s + \lambda_p E_p + \lambda_{mv} E_{mv} \quad 
+    s.t. I_k^{0, 1}(u) \in [0, 1]</script><p>其中$(R, T)_k^1$代表$M_k^1$的旋转和平移变换。整个目标函数有4项，分别代表数据项、光滑项、先验项和多视角一致项。</p>
+<p>数据项（如下所示）计算的是多视角合成的结果$\tilde{I}_{k^\prime}$和拍摄的结果$I_{k^\prime}$之间的误差，其中$\omega_{k^\prime}^{-1}$代表扭曲变换的反变换。</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+    E_d &= \sum_{k^\prime \in \mathcal{N}_k \bigcup k} \sum_{u}\norm{\tilde{I}_{k^\prime}(u) - I_{k^\prime}(u)}^2 \\
+    \tilde{I}_{k^\prime} &= I_k^0\left( \omega_{k^\prime}^{-1} \left( u, M_k^0 \right) \right) + 
+    \beta_k\left( \omega_{k^\prime}^{-1} \left( u, M_k^0 \right) \right) + 
+    I_k^1\left( \omega_{k^\prime}^{-1} \left( u, M_k^1 \right) \right)
+\end{align*}</script><p>光滑项（如下所示）用于最小化$I_k^{0, 1}$的梯度和$M_k^{0, 1}$的平均曲率法向量，其中$v$是网格$M_k^{0, 1}$上的顶点，H是使用余切权重计算得到的拉普拉斯矩阵。</p>
+<script type="math/tex; mode=display">
+E_s = \sum_u \left( \exp\left(-\nabla I_k^{0, 1}(u)\right)\norm{\nabla I_k^{0, 1}(u)}^2 \right) + \sum_v\norm{HM_k^{0, 1}(v)}^2</script><p>先验项（如下所示）用于保证$I_k^{0, 1}$的正则化，使优化过程平稳：</p>
+<script type="math/tex; mode=display">
+E_p = \sum_u \norm{I_k^0(u)}^2 + \sum_u \norm{I_k^1(u)}^2</script><p>两层分解的目标函数优化过程中，多视角一致项的系数$\lambda_{mv}$一开始先设为0，首先优化前三项。优化过程分为交替优化$I_k^{0, 1}$和$\left\{ (R, T)_k^1, M_k^{0, 1} \right\}$两步，每步固定其中一方优化另一方，如此交替迭代直到收敛，然后再将$\lambda_{mv}$调为0.05，在多视角一致性方面进行优化。</p>
+<p>多视角一致项（如下所示）直观上可以描述合成结果和实际拍摄结果之间的误差：</p>
+<script type="math/tex; mode=display">
+E_{mv} = \sum_u \norm{I_k^0(u) - \tilde{I}_k^0(u)}^2 + \sum_u \norm{I_k^1(u) - \tilde{I}_k^1(u)}^2</script><p>实际优化过程中，本文为了确保鲁棒性，按照如下方式计算$\tilde{I}_k^0(u)$，其中用到的结果都是上一步分解过程得到的：</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+    \tilde{I}_k^0(u) &= median \left( \left\{ I_{k^\prime}^0\left(F_{k^\prime}\left( \omega_{k^\prime}\left(u, M_k^0\right) \right)\right)\mid k^\prime \in \mathcal{N}_k \bigcup k \right\} \right) \\
+    \tilde{I}_k^1(u) &= \left\{ 
+        \begin{array}{ll}
+            I_k(u) - \tilde{I}_k^0(u) & if I_k(u) -\tilde{I}_k^0(u) - I_k^1(u) < 0 \\
+            I_k^1(u) & otherwise
+        \end{array}
+    \right.
+\end{align*}</script><p>除此以外，反射中的两种特殊情况（高光和镜面反射）需要单独考虑。高光情形下像素亮度趋于饱和，难以用分解假设进行建模，实际优化时会提取出这些高光像素，不参与到数据项的计算中；对于镜面部分的像素，本文设为$I_k^0 = 0$，$I_k ^1 = I_k$。</p>
+<h2 id="Online-Rendering"><a href="#Online-Rendering" class="headerlink" title="Online Rendering"></a>Online Rendering</h2><p>实时渲染阶段需要在产生新视角（例如相机移动）的过程中，实时渲染出新画面，该过程需要同时兼顾实时性和相对高的渲染质量。本文的渲染相关步骤主要包括两个阶段：视角转换和超采样，视角转换的目标是利用已采集的视角合成新视角下的渲染画面，超采样将低分辨率的渲染画面细化为高分辨率的输出。本节主要概括视角转换阶段的一些具体步骤。</p>
 <p>我理解的大致流程：给定新视角$V_n$-&gt;View Selection选出一系列视角$V_k$-&gt;生成$V_n$对应的FMDP，同时计算$I_k$在$V_n$下的view warping结果-&gt;进行加权view blending-&gt;使用$I_n = I_n^0 + \beta_nI_n^1$进行合成。</p>
 <h3 id="View-Selection"><a href="#View-Selection" class="headerlink" title="View Selection"></a>View Selection</h3><p>定义某个已有视角$V_k$和新视角$V_n$之间的距离$d_k$如下：</p>
 <script type="math/tex; mode=display">
 d_k = \angle(R_k^z, R_n^z)\times\pi / 180+\lambda \lVert t_k - t_n\rVert / \lVert t_n\rVert</script><p>其中$R_k^z, R_n^z$分别代表$V_k, V_n$视角z轴方向（垂直于画面），$t_k, t_n$分别代表两个视角的光学中心，$\angle(R_k^z, R_n^z)$代表两条视角轴的夹角。</p>
+<p>如此定义有两个优点，第一个是从视角距离的定义可以看出，当两个视角光学轴之间的角度越大或光学中心距离越大，视角距离就越大，说明视角距离能够刻画两个不同视角之间的连贯程度；第二个是当不存在视角围绕光学轴的旋转时，仅用光学轴方向就能够很好地表示相机朝向，较为简便。</p>
 <p>在view selection的过程中，会分别搜索$V_n$为原点的空间坐标系的八个卦限中分别寻找，每个卦限又按照角度和不同角度和不同光学中心距离分成9个区域，在每个区域中寻找距离最近的视角。理论上有72个视角，由于距离条件等限制，实际能选到的视角数在20个左右。</p>
-<h3 id="FMDP-Generation"><a href="#FMDP-Generation" class="headerlink" title="FMDP Generation"></a>FMDP Generation</h3><p>完成view selection后，需要将选出的视角的深度图进行融合，得到新视角下的front-most depth map。然而FMDP的结果容易受到一些几何建模上的误差的影响，导致结果不好。</p>
-<p>$x$是一个任意的点，该点相对于两个视角的光学中心$t_k, t_n$的IBR-cost如下定义</p>
+<h3 id="FDMP-Generation-for-Fuzzy-Depth-Test"><a href="#FDMP-Generation-for-Fuzzy-Depth-Test" class="headerlink" title="FDMP Generation for Fuzzy Depth Test"></a>FDMP Generation for Fuzzy Depth Test</h3><p>得到了新视角对应的若干参考视角后，本文通过渲染参考视角中的网格，生成前端深度图(Front-most Depth Map, FDMP)，FMDP用于完成模糊深度测试(Fuzzy Depth Test)，即探测某个空间中的点是否能在新视角中显示出来，类似于消隐过程。如果某个像素的深度与FMDP中对应位置的深度的绝对误差在一定范围内，那么认为这个点在$V_n$下是可见的，可见点将用于后续的视角混合步骤。</p>
+<p>然而，建模误差(Floating Geometry)的存在会较为明显地影响FDMP的质量，导致模糊深度测试结果的不精确。本文利用像素的IBR-cost来减少建模误差带来的影响。对于$V_n$，$V_k$以及三维空间中任一点$x$，定义它们之间的IBR-cost如下：</p>
 <script type="math/tex; mode=display">
-c(t_k, t_n, x) = \angle (t_k - x, t_n - x) \times \pi / 180 + \max (0, 1 - \lVert t_n - x \rVert / \lVert t_k - x \rVert)</script><p>本文的做法是，在$V_n$上计算某个点的front-most depth时，在空间中找出所有可能渲染到这个位置的点，计算理论上最小的IBR-cost，这些点的IBR-cost只有与最小值的绝对误差在一个阈值内时才会被保留，然后从中选出IBR-cost最小的点。(相关例子见图6)</p>
+c(t_k, t_n, x) = \angle (t_k - x, t_n - x) \times \pi / 180 + \max (0, 1 - \lVert t_n - x \rVert / \lVert t_k - x \rVert)</script><p>在FDMP生成过程中，对于空间中能够投影到$V_n$同一像素上的所有点，本文计算出这些点对应的最小IBR-cost，然后仅保留与最小IBR-cost的差值在一定阈值范围内的点，这些点中深度最小的将被选入FDMP。</p>
+<p>IBR-cost对建模误差的体现如下图所示，在新视角（红色三角形）处可以选择蓝色或橙色视角，蓝色视角和橙色视角的深度边缘不一致导致了蓝色视角的建模误差。可以看出，蓝色视角与新视角角度较大，对应的IBR-cost较高，而橙色视角的角度较小，对应的IBR-cost较低，采用IBR-cost较低的橙色视角，选择其对应的橙色点作为FDMP，更加符合真实深度边缘的情形，这说明了IBR-cost确实能够减小建模误差的影响。右边两图分别为不引入和引入IBR-cost的合成效果，明显后者更为平滑自然。</p>
 <p><img src="https://s2.loli.net/2022/05/19/lCOBiz1Aae4G87x.jpg" alt=""></p>
-<h3 id="View-Blending"><a href="#View-Blending" class="headerlink" title="View Blending"></a>View Blending</h3><p>这一步，将所有选定的视角的两层网格进行混合，渲染出视角$V_n$下的低分辨率的结果。其中视角$k$使用如下权重：</p>
+<h3 id="View-Blending"><a href="#View-Blending" class="headerlink" title="View Blending"></a>View Blending</h3><p>视角转换的最后一步是将$V_n$的参考视角中的建模网格和表面层、反射层图片进行融合。在融合之前，通过模糊深度测试移除隐藏的三角形，然后采用如下定义的权重将每个参考视角$V_k$进行融合，其中$\delta=0.033$是实验中使用的数值。</p>
 <script type="math/tex; mode=display">
-w_k = \exp(-d_k/\delta)</script><p>$\delta$是一个固定值（0.033）。这样可以有效避免表面与反射混合过程中造成的不连续。</p>
+w_k = \exp(-d_k/\delta)</script><p>为了避免融合结果产生不连续，本文在融合时对图片边缘进行羽化操作，使得图片拼接的效果更为自然连续。羽化操作即针对深度图边缘的像素进行权值衰减操作，在图片边缘将权重$w_k$光滑地降到0，因为参考视角中距离深度图边缘较远的像素会对最终渲染效果产生较大的贡献，而距离较近的像素可能会变成融合过程中的噪声，所以针对边缘部分的权值衰减能够抑制边缘的不连续。</p>
+<p>实验过程中，权值作为alpha通道进行存储。下图(a)展示了边缘权值衰减的影响，能够看出经过权值衰减的视角融合有更自然的效果。</p>
+<p>融合过程中难免产生一些细小的空洞部分，本文采用基于块的渲染方法，对这些空洞部分进行填充和渲染，填充过程如下图(b)所示。</p>
 <p><img src="https://s2.loli.net/2022/05/19/7mXihnv8K6Y1E5V.jpg" alt=""></p>
-<h3 id="DSRNet"><a href="#DSRNet" class="headerlink" title="DSRNet"></a>DSRNet</h3><p>将上一步生成的低分辨率渲染结果图进行实时超分，得到高分辨率渲染结果图。</p>
-<p>提出DSRNet，结构参见图8，类似于RSSNet，分为feature extraction, feature reweighting, reconstruction, MVR(Motion Vector Refinement)四个模块，MVR是在RSSNet基础上加入的。</p>
+<h2 id="Postprocessing"><a href="#Postprocessing" class="headerlink" title="Postprocessing"></a>Postprocessing</h2><p>后处理部分将视角转换渲染得到的低分辨率图像进行超分辨率处理，得到最终的高质量渲染图像，超分步骤同样有助于消除渲染结果中粗糙、不自然的部分的影响。</p>
+<h3 id="SR-Network-Architecture"><a href="#SR-Network-Architecture" class="headerlink" title="SR Network Architecture"></a>SR Network Architecture</h3><p>本文提出的DSRNet结构基本类似于RSSNet，其核心思想都是保证输出在时间上的连续性，网络结构图如下所示。DSRNet以前一帧的输入图像$I_{n - 1}$，前一帧的输入深度图$D_{n - 1}$，以及当前帧的输入图像$I_n$和深度图$D_n$作为输入，得到超分后的输出$I_n^f$。DSRNet的网络结构中同时有两个特征提取塔，分别对当前帧和前一帧进行特征提取，将二者的特征融合之后送入下一级的U-Net，从而产生最终输出$I_n^f$。特征提取塔和U-Net的结构均保持与RSSNet一致。</p>
 <p><img src="https://s2.loli.net/2022/05/19/LUEjPyXovRYt6FK.jpg" alt=""></p>
-<p>视角从$V_{n-1}$转到$V_n$时，如果仅仅简单地将前一帧使用的图片$I_{n - 1}$做warping，得到的结果并不好，因此引入的MVR通过motion vector$M_d$，$I_n$, $I_{n - 1}$以及warped的上一帧$I_{n - 1}^\prime$作为输入，来预测motion vector的细化的输出$M_r$:</p>
+<p>提升DSRNet输出质量还需要依靠DSRNet中的运动向量校正(Motion Vector Rectification, MVR)模块。运动场(Motion Field)$M_r$通过如下方式计算：</p>
 <script type="math/tex; mode=display">
-M_r = M_d + MVR(I_n, I_{n - 1}, I_{n - 1}^\prime, M_d)</script><p>超分部分的训练使用如下损失函数：</p>
+
+    M_r = M_d + MVR(I_n, I_{n - 1}, M_d\odot I_{n - 1}, M_d)</script><p>其中$M_d$代表利用$D_n$和$D_{n - 1}$计算出来的运动场，$\odot$代表运动场对图片进行变形操作。DSRNet会计算出前一帧和当前帧之间的运动场$M_r$，用$M_r$对前一帧$I_{n - 1}$进行变换，得到变换后的结果$M_r\odot I_{n - 1}$，特征提取塔提取的分别是$I_n$和$M_r\odot I_{n - 1}$的特征，在特征融合过程中会对后者的特征加权。</p>
+<h3 id="SR-Network-Training"><a href="#SR-Network-Training" class="headerlink" title="SR Network Training"></a>SR Network Training</h3><p>训练DSRNet的损失函数定义如下所示：</p>
 <script type="math/tex; mode=display">
-L(x, \hat{x}) = 1 - SSIM(x, \hat{x}) + w\sum_{i=1}^{5}\lVert conv_i(x)-conv_i(\hat{x}) \rVert_2^2</script><p>MVR部分使用如下warping loss，其中$L1$是L1-loss:</p>
+    L\left( I^f, I^{gt} \right) = 1 - SSIM\left( I^f, I^{gt} \right) + w\sum_{i = 1}^5 \norm{conv_i(I^f) - conv_i(I^{gt})}_2^2</script><p>其中$I^f, I^{gt}$分别为网络输出和真实值，SSIM为两张图片之间的结构相似度。</p>
+<p>在MVR模块的训练过程中，定义如下的损失函数：</p>
 <script type="math/tex; mode=display">
-L_{warp} = L1(G(I_n), G(I_{n-1}^\prime)) + L1(I_n, I_{n-1}^\prime)</script><h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><p>作者在i7-7700k+2080Ti台式机环境下搭建pipeline，渲染一张1280*960的图片的平均耗时49.1ms，包含30.7ms view warping和18.4ms DSRNet inference.</p>
+L_{warp} = L1(G(I_n), G(M_r\odot I_{n - 1})) + L1(I_n, M_r\odot I_{n - 1})</script><p>其中$L1(\cdot)$表示L1误差，$G(\cdot)$表示一个$5\times 5$大小的高斯卷积核，起到平滑局部梯度的作用。</p>
+<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><h3 id="Performance"><a href="#Performance" class="headerlink" title="Performance"></a>Performance</h3><p>作者在i7-7700k+2080Ti台式机环境下搭建pipeline，渲染一张1280*960的图片的平均耗时49.1ms，包含30.7ms view warping和18.4ms DSRNet inference.</p>
 <p>不同场景的信息、图片数和占用存储情况如下表所示。</p>
 <p><img src="https://s2.loli.net/2022/05/19/buMQqy1doenSI5N.jpg" alt=""></p>
 <h3 id="Reflection-Decomposition-Algorithm"><a href="#Reflection-Decomposition-Algorithm" class="headerlink" title="Reflection Decomposition Algorithm"></a>Reflection Decomposition Algorithm</h3><p>Reflection decomposition的迭代过程如下所示。<br><img src="https://s2.loli.net/2022/05/19/lSQzIFte5NscHxC.jpg" alt=""></p>
 <p>Reflection decomposition的一些结果比较如下所示。<br><img src="https://s2.loli.net/2022/05/19/E8cM6pUGwWjhigZ.jpg" alt=""></p>
 <p>前面原理部分针对高光、镜面的处理做了细致说明，这里也做了比较。<br><img src="https://s2.loli.net/2022/05/19/SQs6VDPwfXInhA3.jpg" alt=""></p>
 <p><img src="https://s2.loli.net/2022/05/19/Ly2ksYaftFn6zpi.jpg" alt=""></p>
-<h3 id="DSRNet-1"><a href="#DSRNet-1" class="headerlink" title="DSRNet"></a>DSRNet</h3><p>图13～15 表2～3</p>
+<h3 id="DSRNet"><a href="#DSRNet" class="headerlink" title="DSRNet"></a>DSRNet</h3><p>图13～15 表2～3</p>
 <p>使用DSRNet进行超分的结果。原来的低分辨率渲染图中的一些模糊、锯齿问题能得到一定结局。<br><img src="https://s2.loli.net/2022/05/19/Z2Fnipt1jIBKAsH.jpg" alt=""></p>
 <p>使用MVR与否的对比如下。<br><img src="https://s2.loli.net/2022/05/19/TelNr1dt4czqbCo.jpg" alt=""></p>
 <p>不同分辨率网格、图片对结果的影响。<br><img src="https://s2.loli.net/2022/05/19/vZFGxCAqtkuhKa5.jpg" alt=""></p>
@@ -384,7 +448,7 @@ L_{warp} = L1(G(I_n), G(I_{n-1}^\prime)) + L1(I_n, I_{n-1}^\prime)</script><h2 i
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Scalable-Image-based-Indoor-Scene-Rendering-with-Reflections"><span class="nav-number">1.</span> <span class="nav-text">Scalable Image-based Indoor Scene Rendering with Reflections</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Intro"><span class="nav-number">1.1.</span> <span class="nav-text">Intro</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-number">1.2.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Per-view-Two-layer-Mesh-Construction"><span class="nav-number">1.3.</span> <span class="nav-text">Per-view Two-layer Mesh Construction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#View-Warping-Using-Two-layer-Mesh-Representation"><span class="nav-number">1.4.</span> <span class="nav-text">View Warping Using Two-layer Mesh Representation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#View-Selection"><span class="nav-number">1.4.1.</span> <span class="nav-text">View Selection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FMDP-Generation"><span class="nav-number">1.4.2.</span> <span class="nav-text">FMDP Generation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#View-Blending"><span class="nav-number">1.4.3.</span> <span class="nav-text">View Blending</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DSRNet"><span class="nav-number">1.4.4.</span> <span class="nav-text">DSRNet</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Result"><span class="nav-number">1.5.</span> <span class="nav-text">Result</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%A7%E8%83%BD"><span class="nav-number">1.5.1.</span> <span class="nav-text">性能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reflection-Decomposition-Algorithm"><span class="nav-number">1.5.2.</span> <span class="nav-text">Reflection Decomposition Algorithm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DSRNet-1"><span class="nav-number">1.5.3.</span> <span class="nav-text">DSRNet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rendering-Results"><span class="nav-number">1.5.4.</span> <span class="nav-text">Rendering Results</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%86%E9%A2%91%E6%BC%94%E7%A4%BA"><span class="nav-number">2.</span> <span class="nav-text">视频演示</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Scalable-Image-based-Indoor-Scene-Rendering-with-Reflections"><span class="nav-number">1.</span> <span class="nav-text">Scalable Image-based Indoor Scene Rendering with Reflections</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Intro"><span class="nav-number">1.1.</span> <span class="nav-text">Intro</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-number">1.2.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Preprocessing"><span class="nav-number">1.3.</span> <span class="nav-text">Preprocessing</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Global-Mesh-Construction"><span class="nav-number">1.3.1.</span> <span class="nav-text">Global Mesh Construction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Surface-Layer-Construction"><span class="nav-number">1.3.2.</span> <span class="nav-text">Surface Layer Construction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reflection-Decomposition"><span class="nav-number">1.3.3.</span> <span class="nav-text">Reflection Decomposition</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Online-Rendering"><span class="nav-number">1.4.</span> <span class="nav-text">Online Rendering</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#View-Selection"><span class="nav-number">1.4.1.</span> <span class="nav-text">View Selection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FDMP-Generation-for-Fuzzy-Depth-Test"><span class="nav-number">1.4.2.</span> <span class="nav-text">FDMP Generation for Fuzzy Depth Test</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#View-Blending"><span class="nav-number">1.4.3.</span> <span class="nav-text">View Blending</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Postprocessing"><span class="nav-number">1.5.</span> <span class="nav-text">Postprocessing</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SR-Network-Architecture"><span class="nav-number">1.5.1.</span> <span class="nav-text">SR Network Architecture</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SR-Network-Training"><span class="nav-number">1.5.2.</span> <span class="nav-text">SR Network Training</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiments"><span class="nav-number">1.6.</span> <span class="nav-text">Experiments</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Performance"><span class="nav-number">1.6.1.</span> <span class="nav-text">Performance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reflection-Decomposition-Algorithm"><span class="nav-number">1.6.2.</span> <span class="nav-text">Reflection Decomposition Algorithm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DSRNet"><span class="nav-number">1.6.3.</span> <span class="nav-text">DSRNet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rendering-Results"><span class="nav-number">1.6.4.</span> <span class="nav-text">Rendering Results</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%86%E9%A2%91%E6%BC%94%E7%A4%BA"><span class="nav-number">2.</span> <span class="nav-text">视频演示</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
